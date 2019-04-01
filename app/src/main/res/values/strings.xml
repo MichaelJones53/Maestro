@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Maestro</string>
+    <string name="forgot_password">forgot password?</string>
+    <string name="or">- OR -</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="email">email</string>
+    <string name="password">password</string>
+    <string name="log_in">Log In</string>
+    <string name="owl_image">owl_image</string>
+    <string name="confirm_password">confirm password</string>
+    <string name="name">name</string>
+    <string name="user_type">user type</string>
+    <string name="register">REGISTER</string>
 </resources>

@@ -28,6 +28,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:contentDescription="@string/owl_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -40,7 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="forgot password?"
+        android:text="@string/forgot_password"
         android:textColor="@color/colorSecondary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -63,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="- OR -"
+            android:text="@string/or"
             android:textColor="@android:color/white"
             android:textSize="20sp" />
 
@@ -79,7 +80,7 @@
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sign Up"
+                android:text="@string/sign_up"
                 android:textColor="@color/colorSecondary"
                 android:textSize="30sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -107,10 +108,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@android:color/white"
-            android:hint="email"
+            android:hint="@string/email"
             android:inputType="textEmailAddress"
             android:textColor="@color/colorSecondary"
-            android:textColorHint="@color/colorSecondaryLight" />
+            android:textColorHint="@color/colorSecondaryLight" tools:targetApi="lollipop" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -130,9 +131,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@android:color/white"
-            android:hint="password"
+            android:hint="@string/password"
             android:inputType="textPassword"
-            android:textColor="@color/colorSecondary" />
+            android:textColor="@color/colorSecondary" tools:targetApi="lollipop" />
     </android.support.design.widget.TextInputLayout>
 
     <Button
@@ -141,7 +142,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:background="@color/colorSecondary"
-        android:text="Log In"
+        android:text="@string/log_in"
         android:textColor="@android:color/white"
         android:textSize="18sp"
         android:textStyle="bold"

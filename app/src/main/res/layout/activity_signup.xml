@@ -25,10 +25,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@android:color/white"
-            android:hint="confirm password"
+            android:hint="@string/confirm_password"
             android:inputType="textPassword"
             android:textColor="@color/colorSecondary"
-            android:textColorHint="@color/colorSecondaryLight" />
+            android:textColorHint="@color/colorSecondaryLight" tools:targetApi="lollipop" />
     </android.support.design.widget.TextInputLayout>
 
     <Spinner
@@ -60,10 +60,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@android:color/white"
-            android:hint="name"
+            android:hint="@string/name"
             android:inputType="text"
             android:textColor="@color/colorSecondary"
-            android:textColorHint="@color/colorSecondaryLight" />
+            android:textColorHint="@color/colorSecondaryLight" tools:targetApi="lollipop" />
     </android.support.design.widget.TextInputLayout>
 
     <TextView
@@ -72,7 +72,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="7dp"
-        android:text="user type"
+        android:text="@string/user_type"
         android:textColor="@color/colorSecondaryLight"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="@+id/textInputLayout4"
@@ -96,10 +96,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@android:color/white"
-            android:hint="password"
+            android:hint="@string/password"
             android:inputType="textPassword"
             android:textColor="@color/colorSecondary"
-            android:textColorHint="@color/colorSecondaryLight" />
+            android:textColorHint="@color/colorSecondaryLight" tools:targetApi="lollipop" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -119,10 +119,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@android:color/white"
-            android:hint="email"
+            android:hint="@string/email"
             android:inputType="textEmailAddress"
             android:textColor="@color/colorSecondary"
-            android:textColorHint="@color/colorSecondaryLight" />
+            android:textColorHint="@color/colorSecondaryLight" tools:targetApi="lollipop" />
     </android.support.design.widget.TextInputLayout>
 
     <Button
@@ -131,7 +131,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
         android:background="@color/colorSecondary"
-        android:text="REGISTER"
+        android:text="@string/register"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
