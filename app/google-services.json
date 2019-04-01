@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "705725254701",
+    "firebase_url": "https://maestro-56b96.firebaseio.com",
+    "project_id": "maestro-56b96",
+    "storage_bucket": "maestro-56b96.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:705725254701:android:43c93a232098c9f0",
+        "android_client_info": {
+          "package_name": "com.mikejones.maestro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "705725254701-7bu3jjqj4r9r97mjo1u5ksfddiufdv6v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7rDSlIVtySu6iiuzVOAguD5r4NKgPdfw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
