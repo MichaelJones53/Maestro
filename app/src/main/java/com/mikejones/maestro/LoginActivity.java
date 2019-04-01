@@ -26,6 +26,15 @@ public class LoginActivity extends AppCompatActivity {
         mEmailEditText = findViewById(R.id.emailEditText);
         mPasswordEditText = findViewById(R.id.passwordEditText);
 
+        //login button on click
+        mSigninButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), DashboardActivity.class);
+                startActivity(i);
+            }
+        });
+
         //Sign Up button on click
         mSignupButton.setOnClickListener(new View.OnClickListener() {
             @Override
