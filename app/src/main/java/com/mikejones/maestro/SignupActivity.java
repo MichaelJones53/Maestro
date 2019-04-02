@@ -20,7 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
-public class SignupActivity extends AppCompatActivity implements FirebaseAuth.AuthStateListener {
+public class SignupActivity extends AppCompatActivity {
 
     private static final String TAG = "SignupActivity";
 
@@ -103,6 +103,9 @@ public class SignupActivity extends AppCompatActivity implements FirebaseAuth.Au
                             FirebaseUser user = mAuth.getCurrentUser();
 
 
+
+                            //signIn();
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -114,14 +117,6 @@ public class SignupActivity extends AppCompatActivity implements FirebaseAuth.Au
 
     }
 
-
-    @Override
-    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-        if (firebaseAuth.getCurrentUser() != null){
-
-            signIn();
-        }
-    }
 
     private void signIn(){
         Intent i = new Intent(getApplicationContext(), DashboardActivity.class);
