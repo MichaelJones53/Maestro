@@ -16,7 +16,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class LoginActivity extends AppCompatActivity implements FirebaseAuth.AuthStateListener {
+public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "SigninActivity";
 
@@ -81,7 +81,7 @@ public class LoginActivity extends AppCompatActivity implements FirebaseAuth.Aut
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            signIn();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
@@ -92,13 +92,6 @@ public class LoginActivity extends AppCompatActivity implements FirebaseAuth.Aut
                 });
     }
 
-    @Override
-    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-        if (firebaseAuth.getCurrentUser() != null){
-
-            signIn();
-        }
-    }
 
     private void signIn(){
         Intent i = new Intent(getApplicationContext(), DashboardActivity.class);

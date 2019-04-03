@@ -20,7 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
-public class SignupActivity extends AppCompatActivity {
+public class SignupActivity extends AppCompatActivity implements ISignable {
 
     private static final String TAG = "SignupActivity";
 
@@ -80,7 +80,7 @@ public class SignupActivity extends AppCompatActivity {
                 }else if(!Validator.isValidUserType(usertype)){
                     showError("select a proper user type...");
                 }else{
-                    //signUpUser(email,password);
+                    signUpUser(email,password, username, usertype);
                 }
 
 
@@ -89,7 +89,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
 
-    private void signUpUser(String email, String password){
+    private void signUpUser(final String email, String password, final String username, final String usertype){
 
 
 
@@ -101,10 +101,7 @@ public class SignupActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-
-
-
-                            //signIn();
+                            DBManager.getInstance().createUser(email, username, usertype, SignupActivity.this);
 
                         } else {
                             // If sign in fails, display a message to the user.
@@ -118,10 +115,13 @@ public class SignupActivity extends AppCompatActivity {
     }
 
 
-    private void signIn(){
+    public void signIn(){
         Intent i = new Intent(getApplicationContext(), DashboardActivity.class);
         startActivity(i);
         finish();
+    }
+    public void failedSignIn(String message){
+        showError("Error occured: "+message);
     }
 
     private void showError(String message){
