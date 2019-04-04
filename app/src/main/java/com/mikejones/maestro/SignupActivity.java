@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -30,6 +31,7 @@ public class SignupActivity extends AppCompatActivity implements ISignable {
     private TextInputEditText mSignupNameEditText;
     private Spinner mSignupUserTypeSpinner;
     private Button mSignupRegisterButton;
+    private ProgressBar mProgressBar;
 
     private FirebaseAuth mAuth;
 
@@ -47,6 +49,7 @@ public class SignupActivity extends AppCompatActivity implements ISignable {
         mSignupNameEditText = findViewById(R.id.signupNameEditText);
         mSignupUserTypeSpinner = findViewById(R.id.signupUserTypeSpinner);
         mSignupRegisterButton = findViewById(R.id.signupRegisterButton);
+        mProgressBar = findViewById(R.id.signupProgressBar);
 
         //config spinner
         ArrayList<String> spinnerArray = new ArrayList<>();
@@ -92,11 +95,12 @@ public class SignupActivity extends AppCompatActivity implements ISignable {
     private void signUpUser(final String email, String password, final String username, final String usertype){
 
 
-
+        showSpinner();
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        hideSpinner();
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
@@ -126,5 +130,13 @@ public class SignupActivity extends AppCompatActivity implements ISignable {
 
     private void showError(String message){
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void showSpinner(){
+        mProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void hideSpinner(){
+        mProgressBar.setVisibility(View.GONE);
     }
 }

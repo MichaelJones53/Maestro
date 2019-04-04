@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -18,6 +19,7 @@ public class AccountActivity extends AppCompatActivity implements IUpdateable {
     private TextInputEditText mEmailEditText;
     private TextInputEditText mUsernameEditText;
     private TextInputEditText mUsertypeEditText;
+    private ProgressBar mProgressBar;
 
     private FirebaseAuth mAuth;
 
@@ -31,6 +33,8 @@ public class AccountActivity extends AppCompatActivity implements IUpdateable {
         mEmailEditText = findViewById(R.id.accountEmailEditText);
         mUsernameEditText = findViewById(R.id.accountNameEditText);
         mUsertypeEditText = findViewById(R.id.accountUserTypeEditText);
+        mProgressBar = findViewById(R.id.accountProgressBar);
+        showSpinner();
         DBManager.getInstance().getUser(mAuth.getUid(), AccountActivity.this);
 
         mAuth = FirebaseAuth.getInstance();
@@ -39,6 +43,7 @@ public class AccountActivity extends AppCompatActivity implements IUpdateable {
         mSignoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                showSpinner();
                 mAuth.signOut();
                 signOut();
             }
@@ -49,6 +54,7 @@ public class AccountActivity extends AppCompatActivity implements IUpdateable {
     private void signOut(){
         //clear predefs
 
+        hideSpinner();
         Intent i = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(i);
         finish();
@@ -61,5 +67,15 @@ public class AccountActivity extends AppCompatActivity implements IUpdateable {
         mUsertypeEditText.setText(user.getRole());
         mUsernameEditText.setText(user.getUsername());
 
+        hideSpinner();
+
+    }
+
+    private void showSpinner(){
+        mProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void hideSpinner(){
+        mProgressBar.setVisibility(View.GONE);
     }
 }
