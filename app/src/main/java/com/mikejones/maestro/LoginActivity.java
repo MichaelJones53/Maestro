@@ -73,6 +73,27 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        mForgotPasswordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                final String email = mEmailEditText.getText().toString();
+
+                if(Validator.isValidEmail(email)){
+                    showSpinner();
+                    mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            showError("an email was sent to "+email+" if account exists");
+                            hideSpinner();
+                        }
+                    });
+                }else{
+                    showError("Enter a valid email address in the email field.");
+                }
+            }
+        });
+
 
     }
 
