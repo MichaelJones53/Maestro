@@ -10,6 +10,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -77,6 +78,26 @@ public class DBManager {
                 }
             }
         });
+    }
+
+
+    public void createClass(String className, final IClassCreateable classCreateable){
+        Map<String, Object> data = new HashMap<>();
+        data.put(DBConstants.CLASSNAME, className);
+        data.put(DBConstants.PROFESSOR, auth.getUid());
+
+
+        db.collection(DBConstants.CLASSROOMS_TABLE).add(data).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+
+                db.collection(DBConstants.USERS_TABLE).document(auth.getUid()).update(DBConstants.CLASSES, FieldValue.arrayUnion(documentReference.getId()));
+                classCreateable.onClassCreated(documentReference.getId());
+
+            }
+        });
+
+
     }
 
 }

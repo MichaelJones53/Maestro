@@ -1,10 +1,12 @@
 package com.mikejones.maestro;
 
-import android.app.Activity;
+
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.annotation.NonNull;
+
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TextInputEditText;
+
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,21 +16,20 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.TextView;
+
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
-public class DashboardActivity extends AppCompatActivity {
+public class DashboardActivity extends AppCompatActivity implements IClassCreateable {
 
     private FirebaseAuth mAuth;
     private RecyclerView mClassesListView;
     private RecyclerView mInvitesListView;
+    private LinearLayout mInvitesLinearLayout;
     private FloatingActionButton mFloatingActionButton;
     private ArrayList<String> test;
 
@@ -42,6 +43,7 @@ public class DashboardActivity extends AppCompatActivity {
         mClassesListView = findViewById(R.id.classesListView);
         mInvitesListView = findViewById(R.id.invitesListView);
         mFloatingActionButton = findViewById(R.id.dashboardFloatingActionButton);
+        mInvitesLinearLayout = findViewById(R.id.invitesLinearLayout);
 
         test = new ArrayList<>();
         test.add("aaa");
@@ -63,16 +65,24 @@ public class DashboardActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(DashboardActivity.this);
-                builder.setTitle("Create Class");
-                EditText classEditText = new EditText(DashboardActivity.this);
-                classEditText.setHint("Enter Class Name Here...");
-
-                builder.setView(classEditText);
-
+                builder.setTitle("CREATE CLASS");
+                View v = LayoutInflater.from(DashboardActivity.this).inflate(R.layout.class_dialog_layout, null);
+                final TextInputEditText classNameEditText = v.findViewById(R.id.classNameEditText);
+                builder.setView(v);
                 builder.setPositiveButton("CREATE", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        String className = classNameEditText.getText().toString();
 
+                        if(className == null || className.length() < 5){
+                            Toast.makeText(DashboardActivity.this, "Class name must be at least 5 characters", Toast.LENGTH_SHORT).show();
+                        }else{
+                            //TODO: create class
+                            DBManager.getInstance().createClass(className, DashboardActivity.this);
+
+
+
+                        }
                     }
                 });
 
@@ -87,7 +97,7 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
 
-
+        setupScreenForRole();
     }
 
     // create an action bar button
@@ -107,5 +117,22 @@ public class DashboardActivity extends AppCompatActivity {
             startActivity(i);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClassCreated(String classId) {
+        Toast.makeText(DashboardActivity.this, "class created: "+classId, Toast.LENGTH_SHORT).show();
+    }
+
+    private void setupScreenForRole(){
+        PrefManager pm = new PrefManager(this);
+
+        if(pm.getRole().equals("Student")){
+            mFloatingActionButton.hide();
+        }else{
+            mInvitesLinearLayout.setVisibility(View.GONE);
+            mInvitesListView.setVisibility(View.GONE);
+        }
+
     }
 }

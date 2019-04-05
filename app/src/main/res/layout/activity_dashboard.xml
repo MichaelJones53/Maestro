@@ -11,7 +11,6 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginEnd="8dp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -59,8 +58,8 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/classesListView"
             android:layout_width="match_parent"
-            android:layout_weight="3"
-            android:layout_height="0dp" />
+            android:layout_height="0dp"
+            android:layout_weight="6" />
 
         <LinearLayout
             android:id="@+id/invitesLinearLayout"
@@ -104,7 +103,7 @@
             android:id="@+id/invitesListView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="3" />
+            android:layout_weight="6" />
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
