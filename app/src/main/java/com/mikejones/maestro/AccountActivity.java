@@ -11,7 +11,7 @@ import android.widget.ProgressBar;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class AccountActivity extends AppCompatActivity implements IUpdateable {
+public class AccountActivity extends AppCompatActivity{
 
     private static final String TAG = "AccountActivity";
 
@@ -35,11 +35,7 @@ public class AccountActivity extends AppCompatActivity implements IUpdateable {
         mUsertypeEditText = findViewById(R.id.accountUserTypeEditText);
         mProgressBar = findViewById(R.id.accountProgressBar);
         showSpinner();
-        DBManager.getInstance().getUser(mAuth.getUid(), AccountActivity.this);
-
-        mAuth = FirebaseAuth.getInstance();
-
-
+        updateUserData();
         mSignoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,11 +57,13 @@ public class AccountActivity extends AppCompatActivity implements IUpdateable {
 
     }
 
-    public void updateUserData(User user){
+    public void updateUserData(){
         Log.d(TAG, "updateUserData called");
-        mEmailEditText.setText(user.getEmail());
-        mUsertypeEditText.setText(user.getRole());
-        mUsernameEditText.setText(user.getUsername());
+
+        PrefManager pf = new PrefManager(getApplicationContext());
+        mEmailEditText.setText(pf.getEmail());
+        mUsertypeEditText.setText(pf.getRole());
+        mUsernameEditText.setText(pf.getUsername());
 
         hideSpinner();
 

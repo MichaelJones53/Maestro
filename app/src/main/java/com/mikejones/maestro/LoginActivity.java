@@ -17,7 +17,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements IUpdateable{
 
     private static final String TAG = "SigninActivity";
 
@@ -102,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void signInUser(String email, String password){
+    private void signInUser(final String email, final String password){
         showSpinner();
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -112,8 +112,8 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
+                            DBManager.getInstance().getUser(mAuth.getUid(), LoginActivity.this);
 
-                            signIn();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
@@ -143,4 +143,11 @@ public class LoginActivity extends AppCompatActivity {
         mProgressBar.setVisibility(View.GONE);
     }
 
+
+    @Override
+    public void updateUserData(User user) {
+        PrefManager pf = new PrefManager(getApplicationContext());
+        pf.setAllPrefs(user.getEmail(), user.getRole(), user.getUsername());
+        signIn();
+    }
 }

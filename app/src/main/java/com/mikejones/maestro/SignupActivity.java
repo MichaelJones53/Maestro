@@ -120,6 +120,13 @@ public class SignupActivity extends AppCompatActivity implements ISignable {
 
 
     public void signIn(){
+        String e = mSignupEmailEditText.getText().toString();
+        String r = mSignupUserTypeSpinner.getSelectedItem().toString();
+        String u = mSignupNameEditText.getText().toString();
+
+        PrefManager pf = new PrefManager(getApplicationContext());
+        pf.setAllPrefs(e, r, u);
+
         Intent i = new Intent(getApplicationContext(), DashboardActivity.class);
         startActivity(i);
         finish();
@@ -139,4 +146,6 @@ public class SignupActivity extends AppCompatActivity implements ISignable {
     private void hideSpinner(){
         mProgressBar.setVisibility(View.GONE);
     }
+
+
 }
