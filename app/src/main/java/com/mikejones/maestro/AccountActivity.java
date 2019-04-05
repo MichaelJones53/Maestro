@@ -48,7 +48,8 @@ public class AccountActivity extends AppCompatActivity{
 
 
     private void signOut(){
-        //clear predefs
+        PrefManager pf = new PrefManager(this);
+        pf.clearALlPrefs();
 
         hideSpinner();
         Intent i = new Intent(getApplicationContext(), LoginActivity.class);

@@ -56,6 +56,15 @@ public class PrefManager {
         editor.apply();
     }
 
+    public void clearALlPrefs(){
+        SharedPreferences.Editor editor= getEditor();
+        editor.putString(EMAIL, null);
+        editor.putString(USERNAME, null);
+        editor.putString(ROLE, null);
+        editor.apply();
+    }
+
+
     private SharedPreferences getPrefs(){
         return mContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
     }

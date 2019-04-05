@@ -65,7 +65,10 @@ public class DashboardActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(DashboardActivity.this);
                 builder.setTitle("Create Class");
                 EditText classEditText = new EditText(DashboardActivity.this);
+                classEditText.setHint("Enter Class Name Here...");
+
                 builder.setView(classEditText);
+
                 builder.setPositiveButton("CREATE", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
