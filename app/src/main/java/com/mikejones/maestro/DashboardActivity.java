@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -123,11 +124,11 @@ public class DashboardActivity extends AppCompatActivity implements IClassCreate
 
     @Override
     public void onUpdateClassList(ArrayList<UserClass> classes) {
+        Log.d("updateclass", "updateClassCalled");
 
         for(UserClass c: classes){
             mUserClasses.add(c);
         }
-
 
         mClassesListView.getAdapter().notifyDataSetChanged();
     }
