@@ -31,7 +31,7 @@ public class DashboardActivity extends AppCompatActivity implements IClassCreate
     private RecyclerView mInvitesListView;
     private LinearLayout mInvitesLinearLayout;
     private FloatingActionButton mFloatingActionButton;
-    private ArrayList<UserClass> mUserClasses;
+    private ArrayList<UserClass> mUserClasses = new ArrayList<>();
     private boolean isStudent = true;
 
     @Override
@@ -47,8 +47,6 @@ public class DashboardActivity extends AppCompatActivity implements IClassCreate
         mInvitesLinearLayout = findViewById(R.id.invitesLinearLayout);
 
         setupScreenForRole();
-        mUserClasses = new ArrayList<>();
-
 
 
         mClassesListView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -125,7 +123,12 @@ public class DashboardActivity extends AppCompatActivity implements IClassCreate
 
     @Override
     public void onUpdateClassList(ArrayList<UserClass> classes) {
-        mUserClasses = classes;
+
+        for(UserClass c: classes){
+            mUserClasses.add(c);
+        }
+
+
         mClassesListView.getAdapter().notifyDataSetChanged();
     }
 

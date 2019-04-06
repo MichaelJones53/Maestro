@@ -4,13 +4,15 @@ import java.util.ArrayList;
 
 public class UserClass {
     private String professor;
+    private String professorId;
     private String classId;
     private String className;
     private ArrayList<Student> students;
     private ArrayList<Topic> topics;
 
-    public UserClass(String p, String id, String n, ArrayList<Student> s, ArrayList<Topic> t){
+    public UserClass(String p, String pId, String id, String n, ArrayList<Student> s, ArrayList<Topic> t){
         professor = p;
+        professorId = pId;
         classId = id;
         className = n;
         students = s;
@@ -23,6 +25,14 @@ public class UserClass {
 
     public void setProfessor(String professor) {
         this.professor = professor;
+    }
+
+    public String getProfessorId() {
+        return professorId;
+    }
+
+    public void setProfessorId(String professorId) {
+        this.professorId = professorId;
     }
 
     public String getClassId() {

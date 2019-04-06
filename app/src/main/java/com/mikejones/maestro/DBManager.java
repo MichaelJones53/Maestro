@@ -68,7 +68,6 @@ public class DBManager {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
 
                         User user = new User(document.getString(DBConstants.USER_EMAIL),
                                 document.getString(DBConstants.USERNAME),
@@ -116,7 +115,6 @@ public class DBManager {
 
                 ArrayList<String> classes = (ArrayList<String>) task.getResult().get(DBConstants.CLASSES);
                 for(String c: classes){
-                    Log.d("CLASSES", c);
                     cl.add(db.collection(DBConstants.CLASSROOMS_TABLE).document(c).get());
                 }
 
@@ -126,13 +124,20 @@ public class DBManager {
         }).addOnCompleteListener(new OnCompleteListener<List<DocumentSnapshot>>() {
             @Override
             public void onComplete(@NonNull Task<List<DocumentSnapshot>> task) {
+                ArrayList<UserClass> classData = new ArrayList<UserClass>();
                 List<DocumentSnapshot> data = task.getResult();
                 for (DocumentSnapshot doc : data){
-
-                    Log.d("CLASSES", doc.getString(DBConstants.CLASSNAME));
+                    classData.add(new UserClass(doc.getString(DBConstants.PROFESSOR_NAME),
+                            doc.getString(DBConstants.PROFESSOR),
+                            doc.getId(),
+                            doc.getString(DBConstants.CLASSNAME),
+                            null,
+                            null
+                            ));
 
                 }
-                Log.d("CLASSES", "Completed......");
+
+                classCreateable.onUpdateClassList(classData);
             }
         });
 

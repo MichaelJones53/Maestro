@@ -51,4 +51,6 @@ public class SelectorListAdapter extends RecyclerView.Adapter<SelectorListAdapte
 
         }
     }
+
+
 }
