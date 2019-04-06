@@ -3,17 +3,22 @@ package com.mikejones.maestro;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DBManager {
@@ -81,9 +86,10 @@ public class DBManager {
     }
 
 
-    public void createClass(String className, final IClassCreateable classCreateable){
+    public void createClass(String className, String userName, final IClassCreateable classCreateable){
         Map<String, Object> data = new HashMap<>();
         data.put(DBConstants.CLASSNAME, className);
+        data.put(DBConstants.PROFESSOR_NAME, userName);
         data.put(DBConstants.PROFESSOR, auth.getUid());
 
 
@@ -99,6 +105,43 @@ public class DBManager {
 
 
     }
+
+    public void getClasses(final IClassCreateable classCreateable){
+        final Task<DocumentSnapshot> userAccountTask = db.collection(DBConstants.USERS_TABLE).document(auth.getUid()).get();
+        userAccountTask.continueWithTask(new Continuation<DocumentSnapshot, Task<List<DocumentSnapshot>>>() {
+            @Override
+            public Task<List<DocumentSnapshot>> then(@NonNull Task<DocumentSnapshot> task) throws Exception {
+
+               List<Task<DocumentSnapshot>> cl = new ArrayList<>();
+
+                ArrayList<String> classes = (ArrayList<String>) task.getResult().get(DBConstants.CLASSES);
+                for(String c: classes){
+                    Log.d("CLASSES", c);
+                    cl.add(db.collection(DBConstants.CLASSROOMS_TABLE).document(c).get());
+                }
+
+
+                return Tasks.whenAllSuccess(cl);
+            }
+        }).addOnCompleteListener(new OnCompleteListener<List<DocumentSnapshot>>() {
+            @Override
+            public void onComplete(@NonNull Task<List<DocumentSnapshot>> task) {
+                List<DocumentSnapshot> data = task.getResult();
+                for (DocumentSnapshot doc : data){
+
+                    Log.d("CLASSES", doc.getString(DBConstants.CLASSNAME));
+
+                }
+                Log.d("CLASSES", "Completed......");
+            }
+        });
+
+
+
+
+    }
+
+
 
 }
 

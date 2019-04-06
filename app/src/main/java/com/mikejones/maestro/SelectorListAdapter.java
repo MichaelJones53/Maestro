@@ -8,15 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class SelectorListAdapter extends RecyclerView.Adapter<SelectorListAdapter.ViewHolder> {
 
     private Context mContext;
-    private ArrayList<String> data;
+    private ArrayList<UserClass> data;
 
-    public SelectorListAdapter(Context c, ArrayList<String> d){
+    public SelectorListAdapter(Context c, ArrayList<UserClass> d){
         data = d;
         mContext = c;
 
@@ -32,7 +31,7 @@ public class SelectorListAdapter extends RecyclerView.Adapter<SelectorListAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        viewHolder.dataTextView.setText(data.get(i));
+        viewHolder.dataTextView.setText(data.get(i).getClassName());
     }
 
     @Override

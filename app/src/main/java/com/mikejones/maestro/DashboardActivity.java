@@ -31,7 +31,8 @@ public class DashboardActivity extends AppCompatActivity implements IClassCreate
     private RecyclerView mInvitesListView;
     private LinearLayout mInvitesLinearLayout;
     private FloatingActionButton mFloatingActionButton;
-    private ArrayList<String> test;
+    private ArrayList<UserClass> mUserClasses;
+    private boolean isStudent = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,59 +46,57 @@ public class DashboardActivity extends AppCompatActivity implements IClassCreate
         mFloatingActionButton = findViewById(R.id.dashboardFloatingActionButton);
         mInvitesLinearLayout = findViewById(R.id.invitesLinearLayout);
 
-        test = new ArrayList<>();
-        test.add("aaa");
-        test.add("aaa");
-        test.add("aaa");
-        test.add("aaa");
-        test.add("aaa");
-        test.add("aaa");
+        setupScreenForRole();
+        mUserClasses = new ArrayList<>();
+
+
 
         mClassesListView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        mClassesListView.setAdapter(new SelectorListAdapter(this, test));
+        mClassesListView.setAdapter(new SelectorListAdapter(this, mUserClasses));
 
 
 
+        if(!isStudent) {
 
 
+            mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(DashboardActivity.this);
+                    builder.setTitle("CREATE CLASS");
+                    View v = LayoutInflater.from(DashboardActivity.this).inflate(R.layout.class_dialog_layout, null);
+                    final TextInputEditText classNameEditText = v.findViewById(R.id.classNameEditText);
+                    builder.setView(v);
+                    builder.setPositiveButton("CREATE", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            String className = classNameEditText.getText().toString();
 
-        mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(DashboardActivity.this);
-                builder.setTitle("CREATE CLASS");
-                View v = LayoutInflater.from(DashboardActivity.this).inflate(R.layout.class_dialog_layout, null);
-                final TextInputEditText classNameEditText = v.findViewById(R.id.classNameEditText);
-                builder.setView(v);
-                builder.setPositiveButton("CREATE", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        String className = classNameEditText.getText().toString();
-
-                        if(className == null || className.length() < 5){
-                            Toast.makeText(DashboardActivity.this, "Class name must be at least 5 characters", Toast.LENGTH_SHORT).show();
-                        }else{
-                            //TODO: create class
-                            DBManager.getInstance().createClass(className, DashboardActivity.this);
+                            if (className == null || className.length() < 5) {
+                                Toast.makeText(DashboardActivity.this, "Class name must be at least 5 characters", Toast.LENGTH_SHORT).show();
+                            } else {
+                                //TODO: create class
+                                PrefManager pf = new PrefManager(DashboardActivity.this);
+                                DBManager.getInstance().createClass(className, pf.getUsername(),DashboardActivity.this);
 
 
-
+                            }
                         }
-                    }
-                });
+                    });
 
-                builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                    }
-                });
+                    builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    });
 
-                builder.show();
-            }
-        });
+                    builder.show();
+                }
+            });
+        }
 
-        setupScreenForRole();
+        DBManager.getInstance().getClasses(DashboardActivity.this);
     }
 
     // create an action bar button
@@ -124,12 +123,21 @@ public class DashboardActivity extends AppCompatActivity implements IClassCreate
         Toast.makeText(DashboardActivity.this, "class created: "+classId, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onUpdateClassList(ArrayList<UserClass> classes) {
+        mUserClasses = classes;
+        mClassesListView.getAdapter().notifyDataSetChanged();
+    }
+
     private void setupScreenForRole(){
         PrefManager pm = new PrefManager(this);
 
+
         if(pm.getRole().equals("Student")){
+            isStudent = true;
             mFloatingActionButton.hide();
         }else{
+            isStudent = false;
             mInvitesLinearLayout.setVisibility(View.GONE);
             mInvitesListView.setVisibility(View.GONE);
         }

@@ -14,6 +14,7 @@ public class DBConstants{
 
     public static final String CLASSNAME = "Classname";
     public static final String PROFESSOR = "Professor";
+    public static final String PROFESSOR_NAME ="ProfessorName";
 
     public static final String USER_EMAIL = "Email";
     public static final String USERNAME = "Username";
