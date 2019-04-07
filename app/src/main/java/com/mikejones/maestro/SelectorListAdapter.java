@@ -26,12 +26,14 @@ public class SelectorListAdapter extends RecyclerView.Adapter<SelectorListAdapte
     public SelectorListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.from(mContext).inflate(R.layout.selector_layout,viewGroup, false);
 
+
         return new ViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        viewHolder.dataTextView.setText(data.get(i).getClassName());
+        viewHolder.classNameTextView.setText(data.get(i).getClassName().toUpperCase());
+        viewHolder.professorNameTextView.setText(data.get(i).getProfessor().toUpperCase());
     }
 
     @Override
@@ -41,11 +43,13 @@ public class SelectorListAdapter extends RecyclerView.Adapter<SelectorListAdapte
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        public TextView dataTextView;
+        public TextView classNameTextView;
+        public TextView professorNameTextView;
 
         ViewHolder(View v){
             super(v);
-            dataTextView = v.findViewById(R.id.data);
+            classNameTextView = v.findViewById(R.id.classNameTextView);
+            professorNameTextView = v.findViewById(R.id.professorNameTextView);
 
 
 

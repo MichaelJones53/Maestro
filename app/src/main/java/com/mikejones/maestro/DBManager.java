@@ -114,10 +114,15 @@ public class DBManager {
                List<Task<DocumentSnapshot>> cl = new ArrayList<>();
 
                 ArrayList<String> classes = (ArrayList<String>) task.getResult().get(DBConstants.CLASSES);
+
+                if(classes == null || classes.isEmpty()){
+                    //cl.add(userAccountTask);
+                    return Tasks.whenAllSuccess();
+                }
                 for(String c: classes){
+
                     cl.add(db.collection(DBConstants.CLASSROOMS_TABLE).document(c).get());
                 }
-
 
                 return Tasks.whenAllSuccess(cl);
             }
@@ -125,17 +130,22 @@ public class DBManager {
             @Override
             public void onComplete(@NonNull Task<List<DocumentSnapshot>> task) {
                 ArrayList<UserClass> classData = new ArrayList<UserClass>();
-                List<DocumentSnapshot> data = task.getResult();
-                for (DocumentSnapshot doc : data){
-                    classData.add(new UserClass(doc.getString(DBConstants.PROFESSOR_NAME),
-                            doc.getString(DBConstants.PROFESSOR),
-                            doc.getId(),
-                            doc.getString(DBConstants.CLASSNAME),
-                            null,
-                            null
-                            ));
 
+                //TODO: there is an issue here...
+                if(task != null){
+                    List<DocumentSnapshot> data = task.getResult();
+                    for (DocumentSnapshot doc : data){
+                        classData.add(new UserClass(doc.getString(DBConstants.PROFESSOR_NAME),
+                                doc.getString(DBConstants.PROFESSOR),
+                                doc.getId(),
+                                doc.getString(DBConstants.CLASSNAME),
+                                null,
+                                null
+                        ));
+
+                    }
                 }
+
 
                 classCreateable.onUpdateClassList(classData);
             }

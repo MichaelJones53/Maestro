@@ -59,7 +59,8 @@
             android:id="@+id/classesListView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="6" />
+            android:layout_weight="6"
+            />
 
         <LinearLayout
             android:id="@+id/invitesLinearLayout"

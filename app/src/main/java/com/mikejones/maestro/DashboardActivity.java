@@ -10,6 +10,7 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -52,7 +53,7 @@ public class DashboardActivity extends AppCompatActivity implements IClassCreate
 
         mClassesListView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mClassesListView.setAdapter(new SelectorListAdapter(this, mUserClasses));
-
+        mClassesListView.addItemDecoration(new DividerItemDecoration(mClassesListView.getContext(), DividerItemDecoration.VERTICAL));
 
 
         if(!isStudent) {
