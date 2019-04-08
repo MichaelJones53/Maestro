@@ -4,6 +4,7 @@ package com.mikejones.maestro;
 import android.content.DialogInterface;
 import android.content.Intent;
 
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
 
@@ -17,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 
 import android.widget.LinearLayout;
@@ -120,7 +122,8 @@ public class DashboardActivity extends AppCompatActivity implements IClassCreate
 
     @Override
     public void onClassCreated(String classId) {
-        Toast.makeText(DashboardActivity.this, "class created: "+classId, Toast.LENGTH_SHORT).show();
+        DBManager.getInstance().getClasses(DashboardActivity.this);
+
     }
 
     @Override
@@ -128,7 +131,15 @@ public class DashboardActivity extends AppCompatActivity implements IClassCreate
         Log.d("updateclass", "updateClassCalled");
 
         for(UserClass c: classes){
-            mUserClasses.add(c);
+            boolean exists = false;
+            for( UserClass u: mUserClasses){
+                if(u.getClassId().equals(c.getClassId())){
+                    exists = true;
+                }
+            }
+            if(!exists){
+                mUserClasses.add(c);
+            }
         }
 
         mClassesListView.getAdapter().notifyDataSetChanged();

@@ -1,8 +1,10 @@
 package com.mikejones.maestro;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -96,6 +98,8 @@ public class LoginActivity extends AppCompatActivity implements IUpdateable{
                 }else{
                     showError("Enter a valid email address in the email field.");
                 }
+
+
             }
         });
 
@@ -132,7 +136,17 @@ public class LoginActivity extends AppCompatActivity implements IUpdateable{
     }
 
     private void showError(String message){
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+
+        AlertDialog.Builder dialog = new AlertDialog.Builder(LoginActivity.this);
+        dialog.setTitle("MESSAGE");
+        dialog.setMessage(message);
+        dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface di, int id) {
+                di.cancel();
+            }
+        });
+        AlertDialog d = dialog.create();
+        d.show();
     }
 
     private void showSpinner(){
