@@ -22,6 +22,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,6 +38,7 @@ public class DashboardActivity extends AppCompatActivity implements IClassCreate
     private FloatingActionButton mFloatingActionButton;
     private ArrayList<UserClass> mUserClasses = new ArrayList<>();
     private boolean isStudent = true;
+    private ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +51,7 @@ public class DashboardActivity extends AppCompatActivity implements IClassCreate
         mInvitesListView = findViewById(R.id.invitesListView);
         mFloatingActionButton = findViewById(R.id.dashboardFloatingActionButton);
         mInvitesLinearLayout = findViewById(R.id.invitesLinearLayout);
-
+        mProgressBar = findViewById(R.id.dashboardProgressBar);
         setupScreenForRole();
 
 
@@ -79,6 +81,7 @@ public class DashboardActivity extends AppCompatActivity implements IClassCreate
                             } else {
                                 //TODO: create class
                                 PrefManager pf = new PrefManager(DashboardActivity.this);
+                                showSpinner();
                                 DBManager.getInstance().createClass(className, pf.getUsername(),DashboardActivity.this);
 
 
@@ -122,6 +125,7 @@ public class DashboardActivity extends AppCompatActivity implements IClassCreate
 
     @Override
     public void onClassCreated(String classId) {
+        hideSpinner();
         DBManager.getInstance().getClasses(DashboardActivity.this);
 
     }
@@ -129,7 +133,7 @@ public class DashboardActivity extends AppCompatActivity implements IClassCreate
     @Override
     public void onUpdateClassList(ArrayList<UserClass> classes) {
         Log.d("updateclass", "updateClassCalled");
-
+        hideSpinner();
         for(UserClass c: classes){
             boolean exists = false;
             for( UserClass u: mUserClasses){
@@ -145,18 +149,25 @@ public class DashboardActivity extends AppCompatActivity implements IClassCreate
         mClassesListView.getAdapter().notifyDataSetChanged();
     }
 
-    private void setupScreenForRole(){
+    private void setupScreenForRole() {
         PrefManager pm = new PrefManager(this);
 
 
-        if(pm.getRole().equals("Student")){
+        if (pm.getRole().equals("Student")) {
             isStudent = true;
             mFloatingActionButton.hide();
-        }else{
+        } else {
             isStudent = false;
             mInvitesLinearLayout.setVisibility(View.GONE);
             mInvitesListView.setVisibility(View.GONE);
         }
 
+    }
+    private void showSpinner(){
+        mProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void hideSpinner(){
+        mProgressBar.setVisibility(View.GONE);
     }
 }
