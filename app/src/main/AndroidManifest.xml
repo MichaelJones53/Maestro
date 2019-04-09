@@ -9,14 +9,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ClassroomActivity"
-            android:theme="@style/Theme.AppCompat"></activity>
+        <activity android:name=".CreatePostActivity"></activity>
+        <activity
+            android:name=".ClassroomActivity"
+            android:theme="@style/Theme.AppCompat" />
         <activity
             android:name=".AccountActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".DashboardActivity"
-            android:theme="@style/Theme.AppCompat"></activity>
+            android:theme="@style/Theme.AppCompat" />
         <activity
             android:name=".SignupActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />

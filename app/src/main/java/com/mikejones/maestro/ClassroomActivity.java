@@ -19,14 +19,14 @@ import android.widget.Toast;
 public class ClassroomActivity extends AppCompatActivity implements IStudentAddable{
 
     private TextView mClassTextView;
-    private RecyclerView mTopicsRecyclerView;
+    private RecyclerView mPostsRecyclerView;
     private FloatingActionButton mAddStudentFAB;
-    private FloatingActionButton mAddTopicFAB;
+    private FloatingActionButton mAddPostFAB;
     private ProgressBar mProgressBar;
     private boolean isStudent = false;
 
-    private String mClassName = "";
-    private String mClassId = "";
+    private String mClassName;
+    private String mClassId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +38,13 @@ public class ClassroomActivity extends AppCompatActivity implements IStudentAdda
         mClassId = extas.getString("classId");
 
         mClassTextView = findViewById(R.id.classroomNameTextView);
-        mTopicsRecyclerView = findViewById(R.id.classroomTopicList);
-        mAddStudentFAB = findViewById(R.id.classroomAddStudentFloatingActionButton);
-        mAddTopicFAB = findViewById(R.id.classroomAddTopicFAB);
         mProgressBar = findViewById(R.id.classroomProgressBar);
+        mAddStudentFAB = findViewById(R.id.classroomAddStudentFloatingActionButton);
+
+        mAddPostFAB = findViewById(R.id.classroomAddTopicFAB);
+        mPostsRecyclerView = findViewById(R.id.classroomTopicList);
+
+
 
         mClassTextView.setText(mClassName.toUpperCase());
 
@@ -82,6 +85,17 @@ public class ClassroomActivity extends AppCompatActivity implements IStudentAdda
                 });
 
                 builder.show();
+            }
+        });
+
+        mAddPostFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(ClassroomActivity.this, CreatePostActivity.class);
+                i.putExtra("className", mClassId);
+                i.putExtra("classId", mClassId);
+                startActivity(i);
+
             }
         });
 
