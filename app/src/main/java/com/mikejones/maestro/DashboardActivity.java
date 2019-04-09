@@ -48,9 +48,7 @@ public class DashboardActivity extends AppCompatActivity implements IClassCreate
         mAuth = FirebaseAuth.getInstance();
 
         mClassesListView = findViewById(R.id.classesListView);
-        mInvitesListView = findViewById(R.id.invitesListView);
         mFloatingActionButton = findViewById(R.id.dashboardFloatingActionButton);
-        mInvitesLinearLayout = findViewById(R.id.invitesLinearLayout);
         mProgressBar = findViewById(R.id.dashboardProgressBar);
         setupScreenForRole();
 
@@ -101,6 +99,8 @@ public class DashboardActivity extends AppCompatActivity implements IClassCreate
             });
         }
 
+
+        showSpinner();
         DBManager.getInstance().getClasses(DashboardActivity.this);
     }
 
@@ -156,10 +156,6 @@ public class DashboardActivity extends AppCompatActivity implements IClassCreate
         if (pm.getRole().equals("Student")) {
             isStudent = true;
             mFloatingActionButton.hide();
-        } else {
-            isStudent = false;
-            mInvitesLinearLayout.setVisibility(View.GONE);
-            mInvitesListView.setVisibility(View.GONE);
         }
 
     }

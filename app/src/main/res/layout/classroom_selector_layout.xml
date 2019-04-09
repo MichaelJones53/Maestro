@@ -10,48 +10,40 @@
 
     <TextView
         android:id="@+id/postTitleTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:text="Class:"
+        android:layout_marginEnd="8dp"
+        android:text="Title..."
         android:textColor="@android:color/white"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/classNameTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="xxxxxx"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/postTitleTextView"
-        app:layout_constraintStart_toEndOf="@+id/postTitleTextView"
-        app:layout_constraintTop_toTopOf="@+id/postTitleTextView" />
-
-    <TextView
         android:id="@+id/postAuthorTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:text="Professor:"
+        android:layout_marginTop="4dp"
+        android:text="Author"
         android:textColor="@android:color/white"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="@+id/postTitleTextView"
         app:layout_constraintStart_toStartOf="@+id/postTitleTextView"
         app:layout_constraintTop_toBottomOf="@+id/postTitleTextView" />
 
     <TextView
-        android:id="@+id/professorNameTextView"
+        android:id="@+id/postDateTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="xxxxxx"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="5/5/20"
         android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/postAuthorTextView"
-        app:layout_constraintStart_toEndOf="@+id/postAuthorTextView"
-        app:layout_constraintTop_toTopOf="@+id/postAuthorTextView" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/postAuthorTextView"
+        app:layout_constraintTop_toBottomOf="@+id/postAuthorTextView" />
+
 </android.support.constraint.ConstraintLayout>

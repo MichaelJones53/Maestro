@@ -14,6 +14,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -39,9 +40,49 @@ public class DBManager {
         return manager;
     }
 
+    public void addStudent(String studentEmail, final String classId, final IStudentAddable studentAddable){
+        db.collection(DBConstants.USERS_TABLE).whereEqualTo(DBConstants.USER_EMAIL, studentEmail.toLowerCase()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    List<DocumentSnapshot> results = task.getResult().getDocuments();
+
+                    if(results.isEmpty()){
+                        studentAddable.onStudentAddedFailed("Student not found...");
+                    }else{
+                        DocumentSnapshot ds = results.get(0);
+
+                        if(ds.contains(DBConstants.CLASSES)){
+                            List<String> uc = (List<String>) ds.get(DBConstants.CLASSES);
+                            if(uc.contains(classId)){
+                                studentAddable.onStudentAddedFailed("Student already in class...");
+                                return;
+                            }
+                        }
+                        db.collection(DBConstants.USERS_TABLE).document(results.get(0).getId()).update(DBConstants.CLASSES, FieldValue.arrayUnion(classId)).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful()){
+                                    studentAddable.onStudentAdded();
+                                }else{
+                                    studentAddable.onStudentAddedFailed("Failed to add student to class. Please Try again....");
+                                }
+                            }
+                        });
+
+
+
+                    }
+
+                }
+            }
+        });
+    }
+
+
     public void createUser(String email, String name, String role, final ISignable signable){
         Map<String, Object> user = new HashMap<>();
-        user.put(DBConstants.USER_EMAIL, email);
+        user.put(DBConstants.USER_EMAIL, email.toLowerCase());
         user.put(DBConstants.USERNAME, name);
         user.put(DBConstants.USER_ROLE, role);
         db.collection(DBConstants.USERS_TABLE).document(auth.getUid()).set(user)

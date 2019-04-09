@@ -8,9 +8,9 @@ public class UserClass {
     private String classId;
     private String className;
     private ArrayList<Student> students;
-    private ArrayList<Topic> topics;
+    private ArrayList<Post> topics;
 
-    public UserClass(String p, String pId, String id, String n, ArrayList<Student> s, ArrayList<Topic> t){
+    public UserClass(String p, String pId, String id, String n, ArrayList<Student> s, ArrayList<Post> t){
         professor = p;
         professorId = pId;
         classId = id;
@@ -59,11 +59,11 @@ public class UserClass {
         this.students = students;
     }
 
-    public ArrayList<Topic> getTopics() {
+    public ArrayList<Post> getTopics() {
         return topics;
     }
 
-    public void setTopics(ArrayList<Topic> topics) {
+    public void setTopics(ArrayList<Post> topics) {
         this.topics = topics;
     }
 

@@ -32,8 +32,8 @@ public class SelectorListAdapter extends RecyclerView.Adapter<SelectorListAdapte
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, ClassroomActivity.class);
-
-                intent.putExtra("classid", data.get(selection).getClassId());
+                intent.putExtra("className", data.get(selection).getClassName());
+                intent.putExtra("classId", data.get(selection).getClassId());
                 mContext.startActivity(intent);
 
 
