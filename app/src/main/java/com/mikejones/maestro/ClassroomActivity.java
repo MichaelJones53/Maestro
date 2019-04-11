@@ -34,8 +34,8 @@ public class ClassroomActivity extends AppCompatActivity implements IStudentAdda
         setContentView(R.layout.activity_classroom);
 
         Bundle extas = getIntent().getExtras();
-        mClassName = extas.getString("className");
-        mClassId = extas.getString("classId");
+        mClassName = extas.getString("classroomName");
+        mClassId = extas.getString("classroomId");
 
         mClassTextView = findViewById(R.id.classroomNameTextView);
         mProgressBar = findViewById(R.id.classroomProgressBar);
@@ -92,9 +92,10 @@ public class ClassroomActivity extends AppCompatActivity implements IStudentAdda
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(ClassroomActivity.this, CreatePostActivity.class);
-                i.putExtra("className", mClassId);
-                i.putExtra("classId", mClassId);
+                i.putExtra("classroomName", mClassName.toUpperCase());
+                i.putExtra("classroomId", mClassId);
                 startActivity(i);
+
 
             }
         });
