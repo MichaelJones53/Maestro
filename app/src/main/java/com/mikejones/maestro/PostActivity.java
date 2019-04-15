@@ -83,8 +83,8 @@ public class PostActivity extends AppCompatActivity {
                             byte[] img  = (byte[]) o;
                             Bitmap bmp = BitmapFactory.decodeByteArray(img, 0, img.length);
 
-                            mPostImageView.setImageBitmap(Bitmap.createScaledBitmap(bmp, mPostImageView.getWidth(),
-                                    mPostImageView.getHeight(), false));
+                            mPostImageView.setImageBitmap(Bitmap.createScaledBitmap(bmp, bmp.getWidth(),
+                                    bmp.getHeight(), false));
                         }
                     });
 
