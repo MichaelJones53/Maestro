@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,26 +28,25 @@ public class SelectorListAdapter extends RecyclerView.Adapter<SelectorListAdapte
     @Override
     public SelectorListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.from(mContext).inflate(R.layout.selector_layout,viewGroup, false);
-        final int selection = i;
-        itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(mContext, ClassroomActivity.class);
-                intent.putExtra("classroomName", data.get(selection).getClassName());
-                intent.putExtra("classroomId", data.get(selection).getClassId());
-                mContext.startActivity(intent);
-
-
-            }
-        });
 
         return new ViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
+        Log.d("selection: ",i+"");
         viewHolder.classNameTextView.setText(data.get(i).getClassName().toUpperCase());
         viewHolder.professorNameTextView.setText(data.get(i).getProfessor().toUpperCase());
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, ClassroomActivity.class);
+
+                intent.putExtra("singleClassroomName", data.get(i).getClassName());
+                intent.putExtra("singleClassroomId", data.get(i).getClassId());
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override

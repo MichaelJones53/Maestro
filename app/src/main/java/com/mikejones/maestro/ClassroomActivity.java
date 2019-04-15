@@ -7,6 +7,8 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,6 +18,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+
 public class ClassroomActivity extends AppCompatActivity implements IStudentAddable{
 
     private TextView mClassTextView;
@@ -23,6 +29,7 @@ public class ClassroomActivity extends AppCompatActivity implements IStudentAdda
     private FloatingActionButton mAddStudentFAB;
     private FloatingActionButton mAddPostFAB;
     private ProgressBar mProgressBar;
+    private ArrayList<Post> mPostList = new ArrayList<>();
     private boolean isStudent = false;
 
     private String mClassName;
@@ -34,8 +41,8 @@ public class ClassroomActivity extends AppCompatActivity implements IStudentAdda
         setContentView(R.layout.activity_classroom);
 
         Bundle extas = getIntent().getExtras();
-        mClassName = extas.getString("classroomName");
-        mClassId = extas.getString("classroomId");
+        mClassName = extas.getString("singleClassroomName");
+        mClassId = extas.getString("singleClassroomId");
 
         mClassTextView = findViewById(R.id.classroomNameTextView);
         mProgressBar = findViewById(R.id.classroomProgressBar);
@@ -43,6 +50,9 @@ public class ClassroomActivity extends AppCompatActivity implements IStudentAdda
 
         mAddPostFAB = findViewById(R.id.classroomAddTopicFAB);
         mPostsRecyclerView = findViewById(R.id.classroomTopicList);
+        mPostsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        mPostsRecyclerView.setAdapter(new PostListAdapter(this, mClassId, mPostList));
+        mPostsRecyclerView.addItemDecoration(new DividerItemDecoration(mPostsRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
 
 
 
@@ -94,12 +104,14 @@ public class ClassroomActivity extends AppCompatActivity implements IStudentAdda
                 Intent i = new Intent(ClassroomActivity.this, CreatePostActivity.class);
                 i.putExtra("classroomName", mClassName.toUpperCase());
                 i.putExtra("classroomId", mClassId);
-                startActivity(i);
+                startActivityForResult(i, 12);
 
 
             }
         });
 
+        showSpinner();
+        updateDataList();
 
     }
 
@@ -121,6 +133,45 @@ public class ClassroomActivity extends AppCompatActivity implements IStudentAdda
         }
 
     }
+
+    private void updateDataList(){
+        DBManager.getInstance().getPosts(mClassId, new DBManager.DataListener() {
+            @Override
+            public void onDataPrepared() {
+
+            }
+
+            @Override
+            public void onDataSucceeded(Object o) {
+                ArrayList<Post> postData = (ArrayList<Post>) o;
+                for(Post p: postData){
+                    boolean exists = false;
+                    for(Post z: mPostList){
+                        if(z.getPostId().equals(p.getPostId())){
+                            exists = true;
+                        }
+                    }
+                    if(!exists){
+                        mPostList.add(p);
+                    }
+                }
+                Collections.sort(mPostList);
+                mPostsRecyclerView.getAdapter().notifyDataSetChanged();
+                hideSpinner();
+            }
+        });
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 12 && resultCode == RESULT_OK){
+            showSpinner();
+            updateDataList();
+
+        }
+    }
+
     // create an action bar button
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

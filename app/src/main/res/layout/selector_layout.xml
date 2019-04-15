@@ -9,7 +9,7 @@
 
 
     <TextView
-        android:id="@+id/postTitleTextView"
+        android:id="@+id/postListTitleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -27,12 +27,12 @@
         android:layout_marginStart="16dp"
         android:text="xxxxxx"
         android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/postTitleTextView"
-        app:layout_constraintStart_toEndOf="@+id/postTitleTextView"
-        app:layout_constraintTop_toTopOf="@+id/postTitleTextView" />
+        app:layout_constraintBottom_toBottomOf="@+id/postListTitleTextView"
+        app:layout_constraintStart_toEndOf="@+id/postListTitleTextView"
+        app:layout_constraintTop_toTopOf="@+id/postListTitleTextView" />
 
     <TextView
-        android:id="@+id/postAuthorTextView"
+        android:id="@+id/postListAuthorTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -41,8 +41,8 @@
         android:textColor="@android:color/white"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/postTitleTextView"
-        app:layout_constraintTop_toBottomOf="@+id/postTitleTextView" />
+        app:layout_constraintStart_toStartOf="@+id/postListTitleTextView"
+        app:layout_constraintTop_toBottomOf="@+id/postListTitleTextView" />
 
     <TextView
         android:id="@+id/professorNameTextView"
@@ -51,7 +51,7 @@
         android:layout_marginStart="16dp"
         android:text="xxxxxx"
         android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/postAuthorTextView"
-        app:layout_constraintStart_toEndOf="@+id/postAuthorTextView"
-        app:layout_constraintTop_toTopOf="@+id/postAuthorTextView" />
+        app:layout_constraintBottom_toBottomOf="@+id/postListAuthorTextView"
+        app:layout_constraintStart_toEndOf="@+id/postListAuthorTextView"
+        app:layout_constraintTop_toTopOf="@+id/postListAuthorTextView" />
 </android.support.constraint.ConstraintLayout>

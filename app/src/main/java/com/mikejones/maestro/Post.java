@@ -1,8 +1,11 @@
 package com.mikejones.maestro;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
-public class Post {
+public class Post implements Comparable<Post>{
 
     private String postId;
     private String postTitle;
@@ -13,6 +16,8 @@ public class Post {
     private String imageURL;
     private String text;
     private ArrayList<Comment> comments;
+
+    public Post(){}
 
     public Post(String pid, String pt, String aid, String an, String aurl,
                 String ts, String iurl, String t){
@@ -115,5 +120,26 @@ public class Post {
     public void addComment(Comment c)
     {
         comments.add(c);
+    }
+
+    @Override
+    public int compareTo(Post post) {
+        SimpleDateFormat parserSDF = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy");
+        Date date1 = new Date();
+        Date date2 = new Date();
+        try {
+            date1 = parserSDF.parse(timestamp);
+            date2 = parserSDF.parse(post.getTimestamp());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if(date1.before(date2)){
+            return 1;
+        }
+        if(date2.before(date1))
+            return -1;
+
+        return 0;
     }
 }

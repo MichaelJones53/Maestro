@@ -64,6 +64,7 @@ public class DashboardActivity extends AppCompatActivity implements IClassCreate
             mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
                     AlertDialog.Builder builder = new AlertDialog.Builder(DashboardActivity.this);
                     builder.setTitle("CREATE CLASS");
                     View v = LayoutInflater.from(DashboardActivity.this).inflate(R.layout.class_dialog_layout, null);
@@ -152,10 +153,11 @@ public class DashboardActivity extends AppCompatActivity implements IClassCreate
     private void setupScreenForRole() {
         PrefManager pm = new PrefManager(this);
 
-
         if (pm.getRole().equals("Student")) {
             isStudent = true;
             mFloatingActionButton.hide();
+        }else{
+            isStudent = false;
         }
 
     }
