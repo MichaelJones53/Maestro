@@ -69,7 +69,6 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                     viewHolder.commentImageView.setImageBitmap(Bitmap.createScaledBitmap(bmp, bmp.getWidth(),
                             bmp.getHeight(), false));
                     viewHolder.commentImageView.setVisibility(View.VISIBLE);
-                    viewHolder.commentImageView.invalidate();
                 }
             });
         }else{
