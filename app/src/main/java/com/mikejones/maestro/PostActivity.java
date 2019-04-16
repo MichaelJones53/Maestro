@@ -19,9 +19,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ScrollView;
-import android.widget.TabHost;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -237,7 +235,6 @@ public class PostActivity extends AppCompatActivity {
                 Collections.sort(mCommentList);
                 mCommentRecyclerView.getAdapter().notifyDataSetChanged();
                 mPostScrollView.invalidate();
-                Toast.makeText(getApplicationContext(), "SHould update now", Toast.LENGTH_SHORT).show();
             }
         });
 

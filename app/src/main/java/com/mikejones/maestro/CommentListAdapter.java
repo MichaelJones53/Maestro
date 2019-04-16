@@ -1,11 +1,9 @@
 package com.mikejones.maestro;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
-import android.media.MediaRecorder;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -15,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -74,7 +71,6 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
         }
         //set audio
         if(data.get(i).getAudioURL() != null){
-            Toast.makeText(mContext, "data size: "+data.size(), Toast.LENGTH_SHORT).show();
 
             DBManager.getAsset(data.get(i).getAudioURL(), new DBManager.DataListener() {
                 @Override

@@ -2,8 +2,12 @@ package com.mikejones.maestro;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,9 +22,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.RECORD_AUDIO;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class ClassroomActivity extends AppCompatActivity implements IStudentAddable{
 
@@ -54,10 +63,21 @@ public class ClassroomActivity extends AppCompatActivity implements IStudentAdda
         mPostsRecyclerView.setAdapter(new PostListAdapter(this, mClassId, mPostList));
         mPostsRecyclerView.addItemDecoration(new DividerItemDecoration(mPostsRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
 
-
-
         mClassTextView.setText(mClassName.toUpperCase());
 
+        if(!checkPermission()){
+            requestPermission();
+        }else{
+            setupScreen();
+        }
+
+
+
+
+
+    }
+
+    private void setupScreen(){
         setupScreenForRole();
 
         mAddStudentFAB.setOnClickListener(new View.OnClickListener() {
@@ -75,7 +95,7 @@ public class ClassroomActivity extends AppCompatActivity implements IStudentAdda
                         String studentEmail = studentEmailEditText.getText().toString();
 
                         if (!Validator.isValidEmail(studentEmail)) {
-                            Toast.makeText(ClassroomActivity.this, "Invalid email address", Toast.LENGTH_SHORT).show();
+                            showError("Invalid email address");
                         } else {
                             //TODO: create class
                             showSpinner();
@@ -112,9 +132,7 @@ public class ClassroomActivity extends AppCompatActivity implements IStudentAdda
 
         showSpinner();
         updateDataList();
-
     }
-
 
     private void showSpinner(){
         mProgressBar.setVisibility(View.VISIBLE);
@@ -216,5 +234,26 @@ public class ClassroomActivity extends AppCompatActivity implements IStudentAdda
         hideSpinner();
         showError(message);
 
+    }
+
+    public boolean checkPermission() {
+        int result1 = ContextCompat.checkSelfPermission(getApplicationContext(), RECORD_AUDIO);
+        int result2 =  ContextCompat.checkSelfPermission(getApplicationContext(), READ_EXTERNAL_STORAGE);
+        int result3 = ContextCompat.checkSelfPermission(getApplicationContext(), WRITE_EXTERNAL_STORAGE);
+        return result1 == PackageManager.PERMISSION_GRANTED
+                && result2 == PackageManager.PERMISSION_GRANTED
+                && result3 == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(ClassroomActivity.this, new
+                String[]{RECORD_AUDIO, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE}, 0);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        setupScreen();
     }
 }
