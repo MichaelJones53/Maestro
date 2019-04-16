@@ -79,9 +79,6 @@ public class PostActivity extends AppCompatActivity {
             mCommentRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
             mCommentRecyclerView.setAdapter(new CommentListAdapter(this, mClassId, mPostId, mCommentList));
 
-
-            mCommentRecyclerView.setNestedScrollingEnabled(false);
-
         mNewCommentFAB = findViewById(R.id.addCommentFAB);
 
             mNewCommentFAB.setOnClickListener(new View.OnClickListener() {
@@ -239,6 +236,7 @@ public class PostActivity extends AppCompatActivity {
                 }
                 Collections.sort(mCommentList);
                 mCommentRecyclerView.getAdapter().notifyDataSetChanged();
+                mPostScrollView.invalidate();
                 Toast.makeText(getApplicationContext(), "SHould update now", Toast.LENGTH_SHORT).show();
             }
         });

@@ -74,7 +74,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
         }
         //set audio
         if(data.get(i).getAudioURL() != null){
-            Toast.makeText(mContext, "audio called", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "data size: "+data.size(), Toast.LENGTH_SHORT).show();
 
             DBManager.getAsset(data.get(i).getAudioURL(), new DBManager.DataListener() {
                 @Override
