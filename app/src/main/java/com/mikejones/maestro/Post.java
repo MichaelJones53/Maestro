@@ -15,7 +15,7 @@ public class Post implements Comparable<Post>{
     private String timestamp;
     private String imageURL;
     private String text;
-    private ArrayList<Comment> comments;
+    private ArrayList<Post> comments;
 
     public Post(){}
 
@@ -33,7 +33,7 @@ public class Post implements Comparable<Post>{
     }
 
     public Post(String pid, String pt, String aid, String an, String aurl,
-                String ts, String iurl, String t, ArrayList<Comment> c){
+                String ts, String iurl, String t, ArrayList<Post> c){
         postId = pid;
         postTitle = pt;
         authorId = aid;
@@ -109,15 +109,15 @@ public class Post implements Comparable<Post>{
         this.text = text;
     }
 
-    public ArrayList<Comment> getComments() {
+    public ArrayList<Post> getComments() {
         return comments;
     }
 
-    public void setComments(ArrayList<Comment> comments) {
+    public void setComments(ArrayList<Post> comments) {
         this.comments = comments;
     }
 
-    public void addComment(Comment c)
+    public void addComment(Post c)
     {
         comments.add(c);
     }

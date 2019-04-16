@@ -13,7 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PostActivity"
+        <activity android:name=".CreateCommentActivity"></activity>
+        <activity
+            android:name=".PostActivity"
             android:theme="@style/Theme.AppCompat" />
         <activity
             android:name=".RecorderActivity"

@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,8 +23,8 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -94,20 +93,51 @@ public class DBManager {
                     p.setText(snapshot.getString(DBConstants.POST_TEXT));
                 }
 
-//                if(snapshot.contains(DBConstants.POST_COMMENTS)){
-//                    p.setComments(snapshot.getString(DBConstants.POST_COMMENTS));
-//                }
-
-
-
                 listener.onDataSucceeded(p);
+            }
+        });
+
+    }
+    public void getCommentsForPost(String postId, String classId, final DataListener listener){
+        db.collection(DBConstants.CLASSROOMS_TABLE).document(classId).collection(DBConstants.POSTS_TABLE)
+                .document(postId).collection(DBConstants.POST_COMMENTS).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    ArrayList<Post> posts = new ArrayList<>();
+                    for(DocumentSnapshot snapshot: task.getResult().getDocuments()) {
+
+                        Post p = new Post();
+                        p.setPostId(snapshot.getId());
+                        p.setPostTitle(null);
+
+                        if(snapshot.contains(DBConstants.POST_IMAGE_RUL)){
+                            p.setImageURL(snapshot.getString(DBConstants.POST_IMAGE_RUL));
+                        }
+                        if(snapshot.contains(DBConstants.POST_AUDIO_URL)){
+                            p.setAudioURL(snapshot.getString(DBConstants.POST_AUDIO_URL));
+                        }
+                        if(snapshot.contains(DBConstants.POST_TEXT)){
+                            p.setText(snapshot.getString(DBConstants.POST_TEXT));
+                        }
+
+                        if(snapshot.contains(DBConstants.POST_AUTHOR)){
+                            p.setAuthorName(snapshot.getString(DBConstants.POST_AUTHOR));
+                        }
+                        if(snapshot.contains(DBConstants.POST_TIMESTAMP)){
+                            p.setTimestamp(snapshot.getString(DBConstants.POST_TIMESTAMP));
+                        }
+                        posts.add(p);
+                    }
+
+                    listener.onDataSucceeded(posts);
+                }
             }
         });
 
     }
 
     public void getPosts(String classId, final DataListener listener){
-        Log.d("CLASSID: ",classId);
         db.collection(DBConstants.CLASSROOMS_TABLE).document(classId).collection(DBConstants.POSTS_TABLE).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -138,6 +168,40 @@ public class DBManager {
 
     }
 
+    private Task addCommentImageToCloudstore(Bitmap imageBitmap, final String classId, final String postId, final String commentId){
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        final StorageReference imageStorage = storage.getReference().child(DBConstants.IMAGES_PATH+"/"+ UUID.randomUUID()+".jpg");
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] imageData = baos.toByteArray();
+
+        UploadTask uploadImage = imageStorage.putBytes(imageData);
+        uploadImage.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                db.collection(DBConstants.CLASSROOMS_TABLE).document(classId)
+                        .collection(DBConstants.POSTS_TABLE).document(postId)
+                        .collection(DBConstants.POST_COMMENTS).document(commentId)
+                        .update(DBConstants.POST_IMAGE_RUL, imageStorage.getPath()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("DBMANGER: ","post succedded");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("DBMANGER: ",e.getLocalizedMessage());
+                    }
+                });
+
+            }
+        });
+        return uploadImage;
+    }
+
+
+
     private void addImageToCloudstore(Bitmap imageBitmap, final String classId, final String postId){
         FirebaseStorage storage = FirebaseStorage.getInstance();
         final StorageReference imageStorage = storage.getReference().child(DBConstants.IMAGES_PATH+"/"+ UUID.randomUUID()+".jpg");
@@ -149,6 +213,8 @@ public class DBManager {
         uploadImage.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+
                 db.collection(DBConstants.CLASSROOMS_TABLE).document(classId)
                         .collection(DBConstants.POSTS_TABLE).document(postId)
                         .update(DBConstants.POST_IMAGE_RUL, imageStorage.getPath());
@@ -172,6 +238,44 @@ public class DBManager {
                         .update(DBConstants.POST_AUDIO_URL, fileRef.getPath());
             }
         });
+    }
+
+    public void addNewComment(final String classId, final String postId, String authorName,
+                           String postText, final Bitmap imageBitmap,
+                           final String audioPath , final DataListener dataListener){
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+
+        Map<String, Object> post = new HashMap<>();
+        post.put(DBConstants.POST_TEXT, postText);
+        post.put(DBConstants.POST_AUTHOR, authorName);
+        post.put(DBConstants.POST_AUTHOR_ID, auth.getUid());
+        post.put(DBConstants.POST_TIMESTAMP, new Date().toString());
+
+        db.collection(DBConstants.CLASSROOMS_TABLE).document(classId).collection(DBConstants.POSTS_TABLE).document(postId)
+                .collection(DBConstants.POST_COMMENTS)
+                .add(post)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        List<Task<Object>> taskList = new ArrayList<>();
+
+                        if(imageBitmap != null){
+                            Task img = addCommentImageToCloudstore(imageBitmap, classId, postId, documentReference.getId());
+                            taskList.add(img);
+                        }
+                        if(audioPath != null){
+                          //  addCommentAudioToCloudstore(audioPath, classId, postId, documentReference.getId());
+                        }
+                        Tasks.whenAllSuccess(taskList).addOnCompleteListener(new OnCompleteListener<List<Object>>() {
+                            @Override
+                            public void onComplete(@NonNull Task<List<Object>> task) {
+                                dataListener.onDataSucceeded(null);
+                            }
+                        });
+
+                    }
+                });
     }
 
     public void addNewPost(final String classId, String authorName,

@@ -13,18 +13,18 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class CreatePostActivity extends AppCompatActivity {
+public class CreateCommentActivity extends AppCompatActivity {
 
     private TextView mClassNameTextView;
-    private TextInputEditText mPostTitleEditText;
-    private TextInputEditText mPostTextEditText;
-    private Button mAddImageButton;
-    private Button mAddAudioButton;
-    private Button mSubmitButton;
-    private ImageView mImageHolder;
+    private TextInputEditText mCommentTextEditText;
+    private Button mAddCommentImageButton;
+    private Button mAddCommentAudioButton;
+    private Button mSubmitCommentButton;
+    private ImageView mCommentImageHolder;
 
-    private String mClassName;
+    private String mPostTitle;
     private String mClassId;
+    private String mPostId;
     public final int cameraRequestCode = 20;
     public final int audioRequestCode = 30;
 
@@ -34,21 +34,22 @@ public class CreatePostActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_post);
+        setContentView(R.layout.activity_create_comment);
 
         Bundle extras = getIntent().getExtras();
-        mClassName = extras.getString("classroomName");
+        mPostTitle = extras.getString("postTitle");
         mClassId = extras.getString("classroomId");
+        mPostId = extras.getString("postId");
 
-        mClassNameTextView = findViewById(R.id.createPostClassNameTextView);
-        mPostTitleEditText = findViewById(R.id.postTitleEditText);
-        mPostTextEditText = findViewById(R.id.postTextEditText);
-        mAddImageButton = findViewById(R.id.addImageButton);
-        mAddAudioButton = findViewById(R.id.addAudioButton);
-        mSubmitButton = findViewById(R.id.submitPostButton);
-        mImageHolder = findViewById(R.id.postImageView);
 
-        mAddImageButton.setOnClickListener(new View.OnClickListener() {
+        mClassNameTextView = findViewById(R.id.createCommentClassNameTextView);
+        mCommentTextEditText = findViewById(R.id.commentTextEditText);
+        mAddCommentImageButton = findViewById(R.id.addCommentImageButton);
+        mAddCommentAudioButton = findViewById(R.id.addCommentAudioButton);
+        mSubmitCommentButton = findViewById(R.id.submitCommentButton);
+        mCommentImageHolder = findViewById(R.id.commentImageView);
+
+        mAddCommentImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent ci = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -56,37 +57,31 @@ public class CreatePostActivity extends AppCompatActivity {
             }
         });
 
-        mAddAudioButton.setOnClickListener(new View.OnClickListener() {
+        mAddCommentAudioButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(CreatePostActivity.this, RecorderActivity.class);
+                Intent i = new Intent(CreateCommentActivity.this, RecorderActivity.class);
                 startActivityForResult(i,audioRequestCode);
-
             }
         });
 
 
-        mSubmitButton.setOnClickListener(new View.OnClickListener() {
+        mSubmitCommentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if(mPostTitleEditText.getText().toString().length() == 0){
-
-                    showError("Your post must have a title.");
-                }else if(mPostTextEditText.getText().toString().length() == 0
-                    &&  audioFilePath == null
-                    &&  imageBitmap == null
+                if(mCommentTextEditText.getText().toString().length() == 0
+                        &&  audioFilePath == null
+                        &&  imageBitmap == null
                 ){
-                    showError("Your post must contain at least a message, image or audio contribution.");
-
-
+                    showError("Your comment must contain at least a message, image or audio contribution.");
                 }else{
 
-                    PrefManager pf = new PrefManager(CreatePostActivity.this);
-                    DBManager.getInstance().addNewPost(mClassId, pf.getUsername(),
-                            mPostTitleEditText.getText().toString(),
-                            mPostTextEditText.getText().toString(),
-                            imageBitmap, audioFilePath,
+                    PrefManager pf = new PrefManager(CreateCommentActivity.this);
+                    DBManager.getInstance().addNewComment(mClassId, mPostId, pf.getUsername(),
+                            mCommentTextEditText.getText().toString(),
+                            imageBitmap,
+                            audioFilePath,
                             new DBManager.DataListener() {
                                 @Override
                                 public void onDataPrepared() {
@@ -108,7 +103,7 @@ public class CreatePostActivity extends AppCompatActivity {
         });
 
 
-        mClassNameTextView.setText(mClassName);
+        mClassNameTextView.setText(mPostTitle);
 
 
 
@@ -131,7 +126,7 @@ public class CreatePostActivity extends AppCompatActivity {
         }
         if(cameraRequestCode == requestCode && resultCode == RESULT_OK){
             imageBitmap = (Bitmap)data.getExtras().get("data");
-            mImageHolder.setImageBitmap(imageBitmap);
+            mCommentImageHolder.setImageBitmap(imageBitmap);
         }else if(audioRequestCode == requestCode && resultCode == RESULT_OK){
 
             audioFilePath = data.getStringExtra("audioPath");
@@ -141,7 +136,7 @@ public class CreatePostActivity extends AppCompatActivity {
 
     private void showError(String message){
 
-        AlertDialog.Builder dialog = new AlertDialog.Builder(CreatePostActivity.this);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(CreateCommentActivity.this);
         dialog.setTitle("MESSAGE");
         dialog.setMessage(message);
         dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {

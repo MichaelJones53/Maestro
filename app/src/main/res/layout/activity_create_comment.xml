@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/my_gradient"
+    tools:context=".CreateCommentActivity">
+
+    <TextView
+        android:id="@+id/createCommentClassNameTextView"
+        android:layout_width="wrap_content"
+        android:fontFamily="@font/montserrat"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/app_name"
+        android:textColor="@color/colorSecondary"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/createCommentClassNameTextView">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat"
+                android:textColorHint="@color/colorSecondaryLight">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/commentTextEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@android:color/white"
+                    android:fontFamily="@font/montserrat"
+                    android:hint="comment content"
+                    android:textColor="@color/colorSecondary"
+                    android:textColorHint="@color/colorSecondaryLight" />
+            </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/montserrat"
+                android:text="Images"
+                android:textColor="@color/colorSecondary"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/commentImageView"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginBottom="8dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@android:drawable/ic_menu_report_image" />
+
+            <Button
+                android:id="@+id/addCommentImageButton"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:background="@color/colorAccent"
+                android:fontFamily="@font/montserrat"
+                android:text="+ Add Image"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/montserrat"
+                android:text="Audio"
+                android:textColor="@color/colorSecondary"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/addCommentAudioButton"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:background="@color/colorAccent"
+                android:fontFamily="@font/montserrat"
+                android:text="+ Add Audio"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/submitCommentButton"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:background="@android:color/holo_green_light"
+                android:fontFamily="@font/montserrat"
+                android:text="SUBMIT"
+
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>
