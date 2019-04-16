@@ -167,6 +167,25 @@ public class DBManager {
 
 
     }
+    private Task addCommentAudioToCloudstore(String filePath, final String classId, final String postId, final String commentId){
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference audioStorage = storage.getReference().child(DBConstants.AUDIO_PATH);
+
+        Uri file = Uri.fromFile(new File(filePath));
+        final StorageReference fileRef = audioStorage.child(UUID.randomUUID()+".3gp");
+        UploadTask uploadTask = fileRef.putFile(file);
+
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                db.collection(DBConstants.CLASSROOMS_TABLE).document(classId)
+                        .collection(DBConstants.POSTS_TABLE).document(postId)
+                        .collection(DBConstants.POST_COMMENTS).document(commentId)
+                        .update(DBConstants.POST_AUDIO_URL, fileRef.getPath());
+            }
+        });
+        return uploadTask;
+    }
 
     private Task addCommentImageToCloudstore(Bitmap imageBitmap, final String classId, final String postId, final String commentId){
         FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -265,7 +284,8 @@ public class DBManager {
                             taskList.add(img);
                         }
                         if(audioPath != null){
-                          //  addCommentAudioToCloudstore(audioPath, classId, postId, documentReference.getId());
+                            Task aud = addCommentAudioToCloudstore(audioPath, classId, postId, documentReference.getId());
+                            taskList.add(aud);
                         }
                         Tasks.whenAllSuccess(taskList).addOnCompleteListener(new OnCompleteListener<List<Object>>() {
                             @Override
