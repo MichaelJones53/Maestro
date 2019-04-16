@@ -151,7 +151,7 @@ public class DBManager {
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 db.collection(DBConstants.CLASSROOMS_TABLE).document(classId)
                         .collection(DBConstants.POSTS_TABLE).document(postId)
-                        .update(DBConstants.POST_IMAGE_RUL, imageStorage.getDownloadUrl());
+                        .update(DBConstants.POST_IMAGE_RUL, imageStorage.getPath());
             }
         });
     }
@@ -169,7 +169,7 @@ public class DBManager {
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 db.collection(DBConstants.CLASSROOMS_TABLE).document(classId)
                         .collection(DBConstants.POSTS_TABLE).document(postId)
-                        .update(DBConstants.POST_IMAGE_RUL, fileRef.getPath());
+                        .update(DBConstants.POST_AUDIO_URL, fileRef.getPath());
             }
         });
     }
