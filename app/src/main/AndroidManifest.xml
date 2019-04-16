@@ -13,30 +13,41 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CreateCommentActivity"></activity>
+        <activity android:name=".CreateCommentActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            />
         <activity
             android:name=".PostActivity"
+            android:configChanges="keyboardHidden|orientation"
             android:theme="@style/Theme.AppCompat" />
         <activity
             android:name=".RecorderActivity"
+            android:configChanges="keyboardHidden|orientation"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".CreatePostActivity"
+            android:configChanges="keyboardHidden|orientation"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".ClassroomActivity"
+            android:configChanges="keyboardHidden|orientation"
             android:theme="@style/Theme.AppCompat" />
         <activity
+            android:configChanges="keyboardHidden|orientation"
             android:name=".AccountActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".DashboardActivity"
+            android:configChanges="keyboardHidden|orientation"
             android:theme="@style/Theme.AppCompat" />
         <activity
             android:name=".SignupActivity"
+            android:configChanges="keyboardHidden|orientation"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".LoginActivity"
+            android:configChanges="keyboardHidden|orientation"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
