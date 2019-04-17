@@ -2,6 +2,10 @@ package com.mikejones.maestro;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
@@ -19,7 +23,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class LoginActivity extends AppCompatActivity implements IUpdateable{
+public class LoginActivity extends AppCompatActivity implements IUpdateable, SensorEventListener {
 
     private static final String TAG = "SigninActivity";
 
@@ -32,6 +36,13 @@ public class LoginActivity extends AppCompatActivity implements IUpdateable{
 
     private FirebaseAuth mAuth;
 
+    private float x1;
+    private float x2;
+    private float x3;
+    private boolean init;
+    private static final float ERROR = (float) 7.0;
+    private Sensor mAccelerometer;
+    private SensorManager mSensorManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +55,9 @@ public class LoginActivity extends AppCompatActivity implements IUpdateable{
         if(mAuth.getCurrentUser() != null){
             signIn();
         }
+        mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
 
         mSigninButton = findViewById(R.id.signinButton);
         mSignupButton = findViewById(R.id.signupButton);
@@ -163,5 +177,60 @@ public class LoginActivity extends AppCompatActivity implements IUpdateable{
         PrefManager pf = new PrefManager(getApplicationContext());
         pf.setAllPrefs(user.getEmail(), user.getRole(), user.getUsername());
         signIn();
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent e) {
+//Get x,y and z values
+        float x,y,z;
+        x = e.values[0];
+        y = e.values[1];
+        z = e.values[2];
+
+
+        if (!init) {
+            x1 = x;
+            x2 = y;
+            x3 = z;
+            init = true;
+        } else {
+
+            float diffX = Math.abs(x1 - x);
+            float diffY = Math.abs(x2 - y);
+            float diffZ = Math.abs(x3 - z);
+
+            //Handling ACCELEROMETER Noise
+            if (diffX < ERROR) {
+
+                diffX = (float) 0.0;
+            }
+            if (diffY < ERROR) {
+                diffY = (float) 0.0;
+            }
+            if (diffZ < ERROR) {
+
+                diffZ = (float) 0.0;
+            }
+
+
+            x1 = x;
+            x2 = y;
+            x3 = z;
+
+
+            //Horizontal Shake Detected!
+            if (diffX > diffY) {
+
+                TextInputEditText curFocus = (TextInputEditText)getCurrentFocus();
+                if(curFocus != null){
+                    curFocus.setText("");
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+
     }
 }
